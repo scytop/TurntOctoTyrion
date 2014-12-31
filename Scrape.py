@@ -111,4 +111,4 @@ def get1HTML():
         else:
             print subTag
 
-getAllHTML()
+#getAllHTML()
