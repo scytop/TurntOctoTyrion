@@ -54,56 +54,61 @@ def getAllHTML():
     if not subjects:
         getSubjects()
     for subject in subjects:
+        subTag = subject[:-1]
+        makeSubjectFolders()
         if(not dryRun):
-            curURL = urlBase + subject
+            curURL = urlBase + subTag
+            curDir = os.path.join(os.getcwd(), "storage", subTag)
             req = urllib2.Request(curURL, None, headers)
             try:
                 response = urllib2.urlopen(req)
             except Exception as e:
-                print "Url grab failed for " + subject + "\n"
+                print "Url grab failed for " + subTag + "\n"
                 sys.exit()
 
             code = response.getcode()
             if(code == "404"):
                 html = ''
-                print "grabbing " + subject + "failed! 404\n"
+                print "grabbing " + subTag + " failed! 404\n"
             else:
                 html = response.read()
-                print "grabbing " + subject + "successful!\n"
+                print "grabbing " + subTag + " successful!\n"
 
             soup = BeautifulSoup(html)
-            allTRs = soup.find_all('tr', 'dgdClassDataEnrollCap')
-            allAllTRs.append(allTRs)
+            f = open(os.path.join(curDir, "page.html"), 'w')
+            f.write(str(soup))
 
         else:
-            print subject
+            print subTag
 
 def get1HTML():
-    subjects = ["COM+SCI"]
+    subjects = ["COM+SCI\n"]
     for subject in subjects:
+        subTag = subject[:-1]
+        makeSubjectFolders()
         if(not dryRun):
-            curURL = urlBase + subject
+            curURL = urlBase + subTag
+            curDir = os.path.join(os.getcwd(), "storage", subTag)
             req = urllib2.Request(curURL, None, headers)
             try:
                 response = urllib2.urlopen(req)
             except Exception as e:
-                print "Url grab failed for " + subject + "\n"
+                print "Url grab failed for " + subTag + "\n"
                 sys.exit()
 
             code = response.getcode()
             if(code == "404"):
                 html = ''
-                print "grabbing " + subject + "failed! 404\n"
+                print "grabbing " + subTag + " failed! 404\n"
             else:
-                
                 html = response.read()
-                print "grabbing " + subject + "successful!\n"
+                print "grabbing " + subTag + " successful!\n"
 
             soup = BeautifulSoup(html)
-            allAllTRs.append(soup)
+            f = open(os.path.join(curDir, "page.html"), 'w')
+            f.write(str(soup))
 
         else:
-            print subject
-    print allAllTRs
+            print subTag
 
-
+getAllHTML()
